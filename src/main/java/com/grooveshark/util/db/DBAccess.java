@@ -61,6 +61,7 @@ public class DBAccess extends DBStaticStrings
         this.checkIfValid = checkIfValid;
         this.makeConnection();
     }
+
     public static Connection getInstance(String url, String user, String pass, String driver, int numRetries, boolean checkIfValid)
         throws SQLException
     {

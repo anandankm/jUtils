@@ -8,7 +8,7 @@ import org.apache.hadoop.hive.jdbc.HiveDriver;
 
 public class HiveAccess extends DBAccess
 {
-    public static final Logger log = Logger.getLogger(DBAccess.class);
+    public static final Logger log = Logger.getLogger(HiveAccess.class);
 
     public HiveAccess()
         throws SQLException

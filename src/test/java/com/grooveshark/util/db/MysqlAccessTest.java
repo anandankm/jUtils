@@ -50,7 +50,7 @@ public class MysqlAccessTest
                 "2012-11-15	1.7387	37.7917"
         };
 
-    @Before
+    //@Before
     public void setup() {
         try {
             this.mysqlAccess = new MysqlAccess(
@@ -64,7 +64,7 @@ public class MysqlAccessTest
 
     }
 
-    @Test
+    //@Test
     public void executeQueryTest()
     {
         try {
@@ -75,7 +75,7 @@ public class MysqlAccessTest
 
     }
 
-    @Test
+    //@Test
     public void inserViaLoadTest() {
         List<String> valuesList = Arrays.asList(MYSQL_LOAD_TEST_VALUES);
         try {

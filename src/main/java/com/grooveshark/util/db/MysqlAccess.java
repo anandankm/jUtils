@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 public class MysqlAccess extends DBAccess
 {
 
-    public static final Logger log = Logger.getLogger(DBAccess.class);
+    public static final Logger log = Logger.getLogger(MysqlAccess.class);
 
     public MysqlAccess()
         throws SQLException
