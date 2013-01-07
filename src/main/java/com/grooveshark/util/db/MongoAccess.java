@@ -1,6 +1,6 @@
 package com.grooveshark.util.db;
 
-import com.mongodb.MongoClient;
+import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -21,7 +21,7 @@ public class MongoAccess
 {
     public static final Logger log = Logger.getLogger(MongoAccess.class);
 
-    public static Map<String, MongoClient> clients = new HashMap<String, MongoClient>();
+    public static Map<String, Mongo> clients = new HashMap<String, Mongo>();
 
     public static Map<String, DBCollection> colls = new HashMap<String, DBCollection>();
 
@@ -31,7 +31,7 @@ public class MongoAccess
     protected String collectionName;
     protected DB db;
     protected DBCollection collection;
-    protected MongoClient mongoClient;
+    protected Mongo mongoClient;
     protected Morphia morphia;
 
 
@@ -40,6 +40,15 @@ public class MongoAccess
         this.port = DBAccess.DEFAULT_MONGO_PORT;
         this.mongoClient = MongoAccess.getInstance(this.host, this.port);
         this.dbname = DBAccess.DEFAULT_MONGO_DB;
+        this.db = this.mongoClient.getDB(this.dbname);
+        this.morphia = new Morphia();
+    }
+
+    public MongoAccess(String host, int port, String dbname) throws MongoException {
+        this.host = host;
+        this.port = port;
+        this.mongoClient = MongoAccess.getInstance(this.host, this.port);
+        this.dbname = dbname;
         this.db = this.mongoClient.getDB(this.dbname);
         this.morphia = new Morphia();
     }
@@ -94,14 +103,14 @@ public class MongoAccess
     }
 
 
-    public static MongoClient getInstance(String host, int port) throws MongoException {
+    public static Mongo getInstance(String host, int port) throws MongoException {
         String key = host + port;
-        MongoClient client = null;
+        Mongo client = null;
         if (MongoAccess.clients.containsKey(key)) {
             client = MongoAccess.clients.get(key);
         } else {
             try {
-                client = new MongoClient(host, port);
+                client = new Mongo(host, port);
                 MongoAccess.clients.put(key, client);
             } catch (UnknownHostException e) {
                 throw new MongoException("Host unknown: " + host, e);
