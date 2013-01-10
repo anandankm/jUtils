@@ -1,4 +1,4 @@
-package com.grooveshark.hadoop.util;
+package com.grooveshark.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

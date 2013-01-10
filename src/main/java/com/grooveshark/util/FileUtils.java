@@ -1,4 +1,4 @@
-package com.grooveshark.hadoop.util;
+package com.grooveshark.util;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -65,9 +65,5 @@ public class FileUtils
         } else {
             return false;
         }
-    }
-
-    public static void logToStdOut(String threadName, String msg) {
-        System.out.println(DateUtils.getNow() + ": [" + threadName + "] " + msg);
     }
 }
