@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.TreeMap;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -74,9 +77,14 @@ public class FileUtils
         }
     }
 
-    public static String parseJson(String filename, String[] jsonPath) throws Exception {
+    public static BufferedReader getReaderFromResource(String filename) throws Exception {
+        InputStream is = FileUtils.class.getClassLoader().getResourceAsStream(filename);
+        InputStreamReader isr = new InputStreamReader(is);
+        return new BufferedReader(isr);
+    }
+
+    public static String parseJson(BufferedReader br, String[] jsonPath) throws Exception {
         Gson gson = new Gson();
-        BufferedReader br = new BufferedReader( new FileReader(filename) );
         TreeMap file = gson.fromJson(br, TreeMap.class);
         JsonObject jo = gson.toJsonTree(file).getAsJsonObject();
         JsonElement jp = null;
@@ -96,5 +104,16 @@ public class FileUtils
             return jp.toString();
         }
         return jp.getAsString();
+    }
+
+    public static String parseJson(String filename, String[] jsonPath) throws Exception {
+        BufferedReader br = null;
+        File f = new File(filename);
+        if (!f.exists()) {
+            br = FileUtils.getReaderFromResource(filename);
+        } else {
+            br = new BufferedReader( new FileReader(filename) );
+        }
+        return FileUtils.parseJson(br, jsonPath);
     }
 }
