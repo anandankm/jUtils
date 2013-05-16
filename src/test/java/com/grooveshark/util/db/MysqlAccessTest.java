@@ -50,13 +50,13 @@ public class MysqlAccessTest
                 "2012-11-15	1.7387	37.7917"
         };
 
-    @Before
+    //Before
     public void setup() {
         try {
             this.mysqlAccess = new MysqlAccess(
-                    DBStaticStrings.DEFAULT_MYSQL_URL,
-                    DBStaticStrings.DEFAULT_MYSQL_USER,
-                    DBStaticStrings.DEFAULT_MYSQL_PASS
+                    DBAccess.DEFAULT_MYSQL_URL,
+                    DBAccess.DEFAULT_MYSQL_USER,
+                    DBAccess.DEFAULT_MYSQL_PASS
                     );
         } catch (Exception e) {
             fail("Failed to setup DB connection" + e.getMessage());
@@ -64,7 +64,7 @@ public class MysqlAccessTest
 
     }
 
-    @Test
+    //Test
     public void executeQueryTest()
     {
         try {
@@ -75,7 +75,7 @@ public class MysqlAccessTest
 
     }
 
-    @Test
+    //Test
     public void inserViaLoadTest() {
         List<String> valuesList = Arrays.asList(MYSQL_LOAD_TEST_VALUES);
         try {
