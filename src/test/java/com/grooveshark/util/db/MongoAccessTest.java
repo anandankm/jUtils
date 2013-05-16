@@ -11,13 +11,13 @@ import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
 
-public class MongoAccessTest 
+public class MongoAccessTest
 {
     public MongoAccess mongoAccess = null;
-    public Morphia morphia = null; 
+    public Morphia morphia = null;
     public TreeSet<Integer> testFollowers = new TreeSet<Integer>();
 
-    @Before
+    //Before
     public void setup() {
         try {
             this.mongoAccess = new MongoAccess();
@@ -41,7 +41,7 @@ public class MongoAccessTest
 
     }
 
-    @Test
+    //Test
     public void saveObjectTest() {
         int id = 1;
         UserDBObject uo = new UserDBObject(id, this.testFollowers);
@@ -53,7 +53,7 @@ public class MongoAccessTest
         }
     }
 
-    @Test
+    //Test
     public void getObjectTest() {
         int id = 1;
         try {
