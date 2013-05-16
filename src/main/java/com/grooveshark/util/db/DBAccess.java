@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  * Base class for DB access
  *
  */
-public class DBAccess extends DBStaticStrings
+public class DBAccess extends DBProperties
 {
     public static Map<String, Connection> connections = new HashMap<String, Connection>();
 
@@ -85,7 +85,7 @@ public class DBAccess extends DBStaticStrings
      * Checks whether a connection is valid/closed.
      *
      * @param connection: a connection to validate.
-     * @param url,user,pass,driver: to form connection string 
+     * @param url,user,pass,driver: to form connection string
      * @param numRetries: number of retries if the connection is lost or not valid.
      * @return A valid connection
      */
