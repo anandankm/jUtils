@@ -104,7 +104,7 @@
             <testResource>
                 <directory>${basedir}/src/test/resources</directory>
                 <includes>
-                    <include>**/*.properties</include>
+                    <include>**/*</include>
                 </includes>
             </testResource>
         </testResources>
