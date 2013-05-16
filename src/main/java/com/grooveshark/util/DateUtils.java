@@ -3,7 +3,7 @@ package com.grooveshark.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils 
+public class DateUtils
 {
     public static String getNow()
     {
