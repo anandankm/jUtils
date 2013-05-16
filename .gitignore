@@ -1,5 +1,4 @@
 .*.swp
 .*.swo
-src/main/java/com/grooveshark/util/db/DBStaticStrings.java
 target
 log
