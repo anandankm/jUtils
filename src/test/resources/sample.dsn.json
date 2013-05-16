@@ -1,0 +1,25 @@
+{
+    "dsn1": {
+        "host": "example.domain.com",
+        "db_type": "mysql",
+        "user": "user1",
+        "password": "password1",
+        "db": "db1"
+    },
+
+    "dsn2": {
+        "host": "example.domain.com",
+        "db_type": "mysql",
+        "user": "user2",
+        "password": "password2",
+        "db": "db2"
+    },
+
+    "dsn3": {
+        "db_type": "mongo",
+        "host": "mongo.example.com",
+        "port": "2718",
+        "db": "mongodb_1",
+        "collection": "collection_1"
+    }
+}
