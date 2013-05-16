@@ -21,5 +21,17 @@
         "port": "2718",
         "db": "mongodb_1",
         "collection": "collection_1"
+    },
+
+    "defaults": {
+        "mongo_host": "localhost",
+        "mongo_port": "2718",
+        "mongo_db": "test",
+        "mysql_driver": "com.mysql.jdbc.Driver",
+        "mysql_host": "locahost",
+        "mysql_user": "root",
+        "mysql_password": "pass",
+        "hive_host": "localhost",
+        "hive_port": "10000"
     }
 }
