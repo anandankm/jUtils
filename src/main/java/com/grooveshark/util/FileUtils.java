@@ -83,16 +83,16 @@ public class FileUtils
         return new BufferedReader(isr);
     }
 
-    public static String parseJson(BufferedReader br, String[] jsonPath) throws Exception {
+    public static JsonElement parseJson(BufferedReader br, String[] jsonPath) throws Exception {
         Gson gson = new Gson();
         TreeMap file = gson.fromJson(br, TreeMap.class);
         JsonObject jo = gson.toJsonTree(file).getAsJsonObject();
-        JsonElement jp = null;
+        JsonElement je = null;
         for (int i = 0; i < jsonPath.length; i++) {
             String p = jsonPath[i];
             if (jo.has(p)) {
                 if (i == jsonPath.length - 1) {
-                    jp = jo.get(p);
+                    je = jo.get(p);
                     break;
                 }
                 jo = jo.getAsJsonObject(p);
@@ -100,13 +100,28 @@ public class FileUtils
                 throw new Exception("Json file does not contain the string '" + p + "' specified in the path");
             }
         }
-        if (jp.isJsonObject()) {
-            return jp.toString();
-        }
-        return jp.getAsString();
+        return je;
     }
 
-    public static String parseJson(String filename, String[] jsonPath) throws Exception {
+    public static String getJsonValue(JsonElement je, String key)
+    {
+        JsonElement resultJe = null;
+        if (je.isJsonObject()) {
+            JsonObject jo = je.getAsJsonObject();
+            if (jo.has(key)) {
+                resultJe = jo.get(key);
+            }
+        }
+        if (resultJe == null) {
+            return "";
+        }
+        if (resultJe.isJsonObject()) {
+            return resultJe.toString();
+        }
+        return resultJe.getAsString();
+    }
+
+    public static JsonElement parseJson(String filename, String[] jsonPath) throws Exception {
         BufferedReader br = null;
         File f = new File(filename);
         if (!f.exists()) {
