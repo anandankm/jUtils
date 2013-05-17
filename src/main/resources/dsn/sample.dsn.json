@@ -27,11 +27,14 @@
         "mongo_host": "localhost",
         "mongo_port": "2718",
         "mongo_db": "test",
+        "hive_driver": "org.apache.hadoop.hive.jdbc.HiveDriver",
+        "hive_host": "localhost",
+        "hive_port": "10000",
         "mysql_driver": "com.mysql.jdbc.Driver",
         "mysql_host": "locahost",
+        "mysql_db": "mysql",
+        "mysql_options": "?allowMultiQueries=true",
         "mysql_user": "root",
-        "mysql_password": "pass",
-        "hive_host": "localhost",
-        "hive_port": "10000"
+        "mysql_password": "pass"
     }
 }
