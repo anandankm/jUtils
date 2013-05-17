@@ -22,7 +22,6 @@ public class DBProperties
 
     public static String DEFAULTS_DSN_FILENAME = "dsn/sample.dsn.json";
 
-    public static final Logger log = Logger.getLogger(DBProperties.class);
 
     protected String mysqlHost = "localhost";
     protected String mysqlDB = "mysql";
@@ -32,17 +31,59 @@ public class DBProperties
     protected String mongoDB = "test";
     protected int mongoPort = 2718;
 
+    protected String hiveHost = "localhost";
+    protected String hiveDB = "default";
+    protected int hivePort = 10000;
+
+    public static final Logger log = Logger.getLogger(DBProperties.class);
+
     public DBProperties() {
     }
 
     public void loadDefaults() throws Exception {
         String[] defaults = { "defaults" };
-        JsonElement je = FileUtils.parseJson(this.defaultsDsnFilename, defaults);
-        this.DEFAULT_MONGO_HOST = FileUtils.getJsonValue(je, "mongo_host");
-        this.DEFAULT_MONGO_PORT = Integer.parseInt(FileUtils.getJsonValue(je, "mongo_port"));
-        this.DEFAULT_MONGO_DB = FileUtils.getJsonValue(je, "mongo_db");
+        JsonElement je = FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, defaults);
+        this.DEFAULT_MONGO_HOST = this.getJsonMongoHost(je);
+        this.DEFAULT_MONGO_PORT = this.getJsonMongoPort(je);
+        this.DEFAULT_MONGO_DB = this.getJsonMongoDB(je);
         this.DEFAULT_MYSQL_URL = this.getJsonMysqlUrl(je);
         this.DEFAULT_MYSQL_DRIVER = this.getJsonMysqlDriver(je);
+        this.HIVE_URL = this.getJsonHiveUrl(je);
+        this.HIVE_TEST_QUERY = this.getJsonHiveTestQuery(je);
+        log.debug("DEFAULT_MONGO_HOST=" + this.DEFAULT_MONGO_HOST);
+        log.debug("DEFAULT_MONGO_PORT=" + this.DEFAULT_MONGO_PORT);
+        log.debug("DEFAULT_MONGO_DB=" + this.DEFAULT_MONGO_DB);
+        log.debug("DEFAULT_MYSQL_URL=" + this.DEFAULT_MYSQL_URL);
+        log.debug("DEFAULT_MYSQL_DRIVER=" + this.DEFAULT_MYSQL_DRIVER);
+        log.debug("HIVE_URL=" + this.HIVE_URL);
+        log.debug("HIVE_TEST_QUERY=" + this.HIVE_TEST_QUERY);
+    }
+
+    public String getJsonHiveTestQuery(JsonElement je) throws Exception {
+        String hive_test_query = FileUtils.getJsonValue(je, "hive_test_query");
+        return hive_test_query.equals("") ? this.HIVE_TEST_QUERY : hive_test_query;
+    }
+
+    public String getJsonHiveUrl(JsonElement je) throws Exception {
+        this.hiveHost = this.getJsonHiveHost(je);
+        this.hiveDB = this.getJsonHiveDB(je);
+        this.hivePort = this.getJsonHivePort(je);
+        return "jdbc:hive://" + this.hiveHost + ":" + this.hivePort + "/" + this.hiveDB;
+    }
+
+    public String getJsonHiveHost(JsonElement je) throws Exception {
+        String hive_host = FileUtils.getJsonValue(je, "hive_host");
+        return hive_host.equals("") ? this.hiveHost : hive_host;
+    }
+
+    public String getJsonHiveDB(JsonElement je) throws Exception {
+        String hive_db = FileUtils.getJsonValue(je, "hive_db");
+        return hive_db.equals("") ? this.hiveDB : hive_db;
+    }
+
+    public int getJsonHivePort(JsonElement je) throws Exception {
+        String hive_port = FileUtils.getJsonValue(je, "hive_port");
+        return hive_port.equals("") ? this.hivePort : Integer.parseInt(hive_port);
     }
 
     public String getJsonMongoHost(JsonElement je) throws Exception {
@@ -50,14 +91,14 @@ public class DBProperties
         return mongo_host.equals("") ? this.mongoHost : mongo_host;
     }
 
-    public String getJsonMongoPort(JsonElement je) throws Exception {
+    public int getJsonMongoPort(JsonElement je) throws Exception {
         String mongo_port = FileUtils.getJsonValue(je, "mongo_port");
         return mongo_port.equals("") ? this.mongoPort : Integer.parseInt(mongo_port);
     }
 
     public String getJsonMongoDB(JsonElement je) throws Exception {
         String mongo_db = FileUtils.getJsonValue(je, "mongo_db");
-        return mongo_db.equals("") ? this.mongoDB : Integer.parseInt(mongo_db);
+        return mongo_db.equals("") ? this.mongoDB : mongo_db;
     }
 
     public String getJsonMysqlDriver(JsonElement je) throws Exception {
@@ -162,5 +203,41 @@ public class DBProperties
      */
     public String getMongoDB() {
         return this.mongoDB;
+    }
+    /**
+     * Setter method for hiveHost
+     */
+    public void setHiveHost(String hiveHost) {
+        this.hiveHost = hiveHost;
+    }
+    /**
+     * Getter method for hiveHost
+     */
+    public String getHiveHost() {
+        return this.hiveHost;
+    }
+    /**
+     * Setter method for hiveDB
+     */
+    public void setHiveDB(String hiveDB) {
+        this.hiveDB = hiveDB;
+    }
+    /**
+     * Getter method for hiveDB
+     */
+    public String getHiveDB() {
+        return this.hiveDB;
+    }
+    /**
+     * Setter method for hivePort
+     */
+    public void setHivePort(int hivePort) {
+        this.hivePort = hivePort;
+    }
+    /**
+     * Getter method for hivePort
+     */
+    public int getHivePort() {
+        return this.hivePort;
     }
 }
