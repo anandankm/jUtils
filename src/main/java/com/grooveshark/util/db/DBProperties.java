@@ -14,9 +14,6 @@ public class DBProperties
     public static int DEFAULT_MONGO_PORT = 2718;
     public static String DEFAULT_MONGO_DB = "test";
 
-    public static String HIVE_URL = "jdbc:hive://localhost:10000/default";
-    public static String HIVE_TEST_QUERY = "";
-
     public static String DEFAULT_MYSQL_DRIVER = "com.mysql.jdbc.Driver";
     public static String DEFAULT_HIVE_DRIVER = "org.apache.hadoop.hive.jdbc.HiveDriver";
 
@@ -31,13 +28,24 @@ public class DBProperties
     protected String mongoDB = "test";
     protected int mongoPort = 2718;
 
-    protected String hiveHost = "localhost";
-    protected String hiveDB = "default";
-    protected int hivePort = 10000;
+    protected String hiveUrl = "";
+    protected String hiveTestQuery = "";
+
+
+    protected String hiveHost = "";
+    protected String hiveDB = "";
+    protected int hivePort = 0;
 
     public static final Logger log = Logger.getLogger(DBProperties.class);
 
     public DBProperties() {
+        log.debug("Loading defaults");
+        try {
+            this.loadDefaults();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void loadDefaults() throws Exception {
@@ -48,26 +56,29 @@ public class DBProperties
         this.DEFAULT_MONGO_DB = this.getJsonMongoDB(je);
         this.DEFAULT_MYSQL_URL = this.getJsonMysqlUrl(je);
         this.DEFAULT_MYSQL_DRIVER = this.getJsonMysqlDriver(je);
-        this.HIVE_URL = this.getJsonHiveUrl(je);
-        this.HIVE_TEST_QUERY = this.getJsonHiveTestQuery(je);
+        this.hiveUrl = this.getJsonHiveUrl(je);
+        this.hiveTestQuery = this.getJsonHiveTestQuery(je);
         log.debug("DEFAULT_MONGO_HOST=" + this.DEFAULT_MONGO_HOST);
         log.debug("DEFAULT_MONGO_PORT=" + this.DEFAULT_MONGO_PORT);
         log.debug("DEFAULT_MONGO_DB=" + this.DEFAULT_MONGO_DB);
         log.debug("DEFAULT_MYSQL_URL=" + this.DEFAULT_MYSQL_URL);
         log.debug("DEFAULT_MYSQL_DRIVER=" + this.DEFAULT_MYSQL_DRIVER);
-        log.debug("HIVE_URL=" + this.HIVE_URL);
-        log.debug("HIVE_TEST_QUERY=" + this.HIVE_TEST_QUERY);
+        log.debug("HIVE_URL=" + this.hiveUrl);
+        log.debug("HIVE_TEST_QUERY=" + this.hiveTestQuery);
     }
 
     public String getJsonHiveTestQuery(JsonElement je) throws Exception {
         String hive_test_query = FileUtils.getJsonValue(je, "hive_test_query");
-        return hive_test_query.equals("") ? this.HIVE_TEST_QUERY : hive_test_query;
+        return hive_test_query.equals("") ? this.hiveTestQuery : hive_test_query;
     }
 
     public String getJsonHiveUrl(JsonElement je) throws Exception {
         this.hiveHost = this.getJsonHiveHost(je);
         this.hiveDB = this.getJsonHiveDB(je);
         this.hivePort = this.getJsonHivePort(je);
+        if (this.hiveHost.equals("") && this.hiveDB.equals("") && this.hivePort == 0) {
+            return "jdbc:hive://";
+        }
         return "jdbc:hive://" + this.hiveHost + ":" + this.hivePort + "/" + this.hiveDB;
     }
 
@@ -239,5 +250,29 @@ public class DBProperties
      */
     public int getHivePort() {
         return this.hivePort;
+    }
+    /**
+     * Setter method for hiveUrl
+     */
+    public void setHiveUrl(String hiveUrl) {
+        this.hiveUrl = hiveUrl;
+    }
+    /**
+     * Getter method for hiveUrl
+     */
+    public String getHiveUrl() {
+        return this.hiveUrl;
+    }
+    /**
+     * Setter method for hiveTestQuery
+     */
+    public void setHiveTestQuery(String hiveTestQuery) {
+        this.hiveTestQuery = hiveTestQuery;
+    }
+    /**
+     * Getter method for hiveTestQuery
+     */
+    public String getHiveTestQuery() {
+        return this.hiveTestQuery;
     }
 }
