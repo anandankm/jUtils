@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
  * Base class for DB access
  *
  */
-public class DBAccess extends DBProperties
+public class DBAccess
 {
     public static Map<String, Connection> connections = new HashMap<String, Connection>();
 
@@ -35,10 +35,13 @@ public class DBAccess extends DBProperties
     protected String pass = "";
     protected boolean checkIfValid = true;
 
+    /**
+     * Constructors
+     */
+
     public DBAccess()
         throws SQLException
     {
-        this.makeConnection();
     }
 
     public DBAccess(String driver, String url, String user, String pass)
@@ -59,9 +62,13 @@ public class DBAccess extends DBProperties
         this.user = user;
         this.pass = pass;
         this.checkIfValid = checkIfValid;
+        log.debug("Url: " + this.url);
         this.makeConnection();
     }
 
+    /**
+     * Get instance method to get a connection
+     */
     public static Connection getInstance(String url, String user, String pass, String driver, int numRetries, boolean checkIfValid)
         throws SQLException
     {
@@ -75,6 +82,7 @@ public class DBAccess extends DBProperties
                 connection = DriverManager.getConnection(url, user, pass);
                 DBAccess.connections.put(key, connection);
             } catch (Exception e) {
+                log.error("Error getting a db connection. Url: " + url + "; User: " + user + "; Pass: " + pass + "; Driver: " + driver, e);
                 throw new SQLException("Error getting a db connection. Url: " + url + "; User: " + user + "; Pass: " + pass + "; Driver: " + driver, e);
             }
         }
@@ -149,4 +157,64 @@ public class DBAccess extends DBProperties
         return stringTypes;
     }
 
+    /**
+     * Setter method for driver
+     */
+    public void setDriver(String driver) {
+        this.driver = driver;
+    }
+    /**
+     * Getter method for driver
+     */
+    public String getDriver() {
+        return this.driver;
+    }
+    /**
+     * Setter method for url
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    /**
+     * Getter method for url
+     */
+    public String getUrl() {
+        return this.url;
+    }
+    /**
+     * Setter method for user
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+    /**
+     * Getter method for user
+     */
+    public String getUser() {
+        return this.user;
+    }
+    /**
+     * Setter method for pass
+     */
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+    /**
+     * Getter method for pass
+     */
+    public String getPass() {
+        return this.pass;
+    }
+    /**
+     * Setter method for checkIfValid
+     */
+    public void setCheckIfValid(boolean checkIfValid) {
+        this.checkIfValid = checkIfValid;
+    }
+    /**
+     * Getter method for checkIfValid
+     */
+    public boolean getCheckIfValid() {
+        return this.checkIfValid;
+    }
 }
