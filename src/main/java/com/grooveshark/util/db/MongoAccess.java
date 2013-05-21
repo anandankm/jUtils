@@ -36,10 +36,10 @@ public class MongoAccess
 
 
     public MongoAccess() throws MongoException {
-        this.host = DBAccess.DEFAULT_MONGO_HOST;
-        this.port = DBAccess.DEFAULT_MONGO_PORT;
+        this.host = DBProperties.DEFAULT_MONGO_HOST;
+        this.port = DBProperties.DEFAULT_MONGO_PORT;
         this.mongoClient = MongoAccess.getInstance(this.host, this.port);
-        this.dbname = DBAccess.DEFAULT_MONGO_DB;
+        this.dbname = DBProperties.DEFAULT_MONGO_DB;
         this.db = this.mongoClient.getDB(this.dbname);
         this.morphia = new Morphia();
     }
