@@ -54,9 +54,9 @@ public class MysqlAccessTest
     public void setup() {
         try {
             this.mysqlAccess = new MysqlAccess(
-                    DBAccess.DEFAULT_MYSQL_URL,
-                    DBAccess.DEFAULT_MYSQL_USER,
-                    DBAccess.DEFAULT_MYSQL_PASS
+                    DBProperties.DEFAULT_MYSQL_URL,
+                    DBProperties.DEFAULT_MYSQL_USER,
+                    DBProperties.DEFAULT_MYSQL_PASS
                     );
         } catch (Exception e) {
             fail("Failed to setup DB connection" + e.getMessage());

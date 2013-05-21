@@ -18,16 +18,16 @@ public class MysqlAccess extends DBAccess
     public MysqlAccess()
         throws SQLException
     {
-        super(DBAccess.DEFAULT_MYSQL_DRIVER,
-               DBAccess.DEFAULT_MYSQL_URL,
-               DBAccess.DEFAULT_MYSQL_USER,
-               DBAccess.DEFAULT_MYSQL_PASS);
+        super(DBProperties.DEFAULT_MYSQL_DRIVER,
+               DBProperties.DEFAULT_MYSQL_URL,
+               DBProperties.DEFAULT_MYSQL_USER,
+               DBProperties.DEFAULT_MYSQL_PASS);
     }
 
     public MysqlAccess(String url, String user, String pass)
         throws SQLException
     {
-        super(DBAccess.DEFAULT_MYSQL_DRIVER, url, user, pass);
+        super(DBProperties.DEFAULT_MYSQL_DRIVER, url, user, pass);
     }
 
     public void insertValues(List<String> values, String table)
