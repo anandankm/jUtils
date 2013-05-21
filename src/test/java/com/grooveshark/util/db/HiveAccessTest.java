@@ -14,29 +14,34 @@ import static org.junit.Assert.fail;
 public class HiveAccessTest
 {
     public DBAccess hiveAccess = null;
+    public DBProperties dbProps = null;
 
-    //@Before
+    @Before
     public void setup() {
         try {
-            this.hiveAccess = new DBAccess(
-                    DBAccess.DEFAULT_HIVE_DRIVER,
-                    DBAccess.HIVE_URL, "", "", false);
+            this.dbProps = new DBProperties();
+            this.hiveAccess = new DBAccess();
+            this.hiveAccess.setUrl(this.dbProps.getHiveUrl());
+            this.hiveAccess.setDriver(this.dbProps.DEFAULT_HIVE_DRIVER);
+            this.hiveAccess.setCheckIfValid(false);
+            this.hiveAccess.makeConnection();
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Failed to setup DB connection" + e.getMessage());
         }
 
     }
 
-    //@Test
+    @Test
     public void executeQueryTest()
     {
         try {
             long start = System.currentTimeMillis();
-            System.out.println("Query result: " + this.hiveAccess.executeQuery(DBAccess.HIVE_TEST_QUERY));
+            System.out.println("Query result: " + this.hiveAccess.executeQuery(this.dbProps.getHiveTestQuery()));
             float elapsed = (System.currentTimeMillis() - start)/(float) 1000;
             System.out.println("Done ("+elapsed+" secs).");
         } catch (Exception e) {
-            fail("Failed to execute query: " + DBAccess.HIVE_TEST_QUERY + "; Exception: "  + e.getMessage());
+            e.printStackTrace();
         }
     }
 
