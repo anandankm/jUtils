@@ -20,12 +20,17 @@ public class DBProperties
     public static String DEFAULTS_DSN_FILENAME = "dsn/sample.dsn.json";
 
 
-    protected String mysqlHost = "localhost";
-    protected String mysqlDB = "mysql";
+    protected String mysqlURL = "";
+    protected String mysqlUser = "";
+    protected String mysqlPass = "";
+    protected String mysqlDriver = "";
+
+    protected String mysqlHost = "";
+    protected String mysqlDB = "";
     protected String mysqlOptions = "";
 
-    protected String mongoHost = "localhost";
-    protected String mongoDB = "test";
+    protected String mongoHost = "";
+    protected String mongoDB = "";
     protected int mongoPort = 2718;
 
     protected String hiveUrl = "";
@@ -34,7 +39,7 @@ public class DBProperties
 
     protected String hiveHost = "";
     protected String hiveDB = "";
-    protected int hivePort = 0;
+    protected int hivePort = 10000;
 
     public static final Logger log = Logger.getLogger(DBProperties.class);
 
@@ -51,11 +56,11 @@ public class DBProperties
     public void loadDefaults() throws Exception {
         String[] defaults = { "defaults" };
         JsonElement je = FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, defaults);
-        this.DEFAULT_MONGO_HOST = this.getJsonMongoHost(je);
-        this.DEFAULT_MONGO_PORT = this.getJsonMongoPort(je);
-        this.DEFAULT_MONGO_DB = this.getJsonMongoDB(je);
-        this.DEFAULT_MYSQL_URL = this.getJsonMysqlUrl(je);
-        this.DEFAULT_MYSQL_DRIVER = this.getJsonMysqlDriver(je);
+        this.mongoHost = this.getJsonMongoHost(je);
+        this.mongoPort = this.getJsonMongoPort(je);
+        this.mongoDB = this.getJsonMongoDB(je);
+        this.mysqlURL = this.getJsonMysqlUrl(je);
+        this.mysqlDriver = this.getJsonMysqlDriver(je);
         this.hiveUrl = this.getJsonHiveUrl(je);
         this.hiveTestQuery = this.getJsonHiveTestQuery(je);
         log.debug("DEFAULT_MONGO_HOST=" + this.DEFAULT_MONGO_HOST);
@@ -121,6 +126,9 @@ public class DBProperties
         this.mysqlHost = this.getJsonMysqlHost(je);
         this.mysqlDB = this.getJsonMysqlDB(je);
         this.mysqlOptions = this.getJsonMysqlOptions(je);
+        if (this.mysqlHost.equals("") && this.mysqlDB.equals("")) {
+            return DBProperties.DEFAULT_MYSQL_URL;
+        }
         return "jdbc:mysql://" + this.mysqlHost + ":3306/" + this.mysqlDB + this.mysqlOptions;
     }
 
@@ -143,6 +151,54 @@ public class DBProperties
         this.DEFAULTS_DSN_FILENAME = filename;
     }
 
+    /**
+     * Setter method for mysqlURL
+     */
+    public void setMysqlURL(String mysqlURL) {
+        this.mysqlURL = mysqlURL;
+    }
+    /**
+     * Getter method for mysqlURL
+     */
+    public String getMysqlURL() {
+        return this.mysqlURL;
+    }
+    /**
+     * Setter method for mysqlUser
+     */
+    public void setMysqlUser(String mysqlUser) {
+        this.mysqlUser = mysqlUser;
+    }
+    /**
+     * Getter method for mysqlUser
+     */
+    public String getMysqlUser() {
+        return this.mysqlUser;
+    }
+    /**
+     * Setter method for mysqlPass
+     */
+    public void setMysqlPass(String mysqlPass) {
+        this.mysqlPass = mysqlPass;
+    }
+    /**
+     * Getter method for mysqlPass
+     */
+    public String getMysqlPass() {
+        return this.mysqlPass;
+    }
+    /**
+     * Setter method for mysqlDriver
+     */
+    public void setMysqlDriver(String mysqlDriver) {
+        this.mysqlDriver = mysqlDriver;
+    }
+    /**
+     * Getter method for mysqlDriver
+     */
+    public String getMysqlDriver() {
+        return this.mysqlDriver;
+    }
     /**
      * Setter method for mysqlHost
      */
