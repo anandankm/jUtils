@@ -147,7 +147,10 @@ public class DBProperties
         return mysql_db.equals("") ? this.mysqlDB : mysql_db;
     }
 
-    public void setDefaultsDsnFilename(String filename) {
+    public void setDefaultsDsnFilename(String filename) throws DBPropertiesException {
+        if (!FileUtils.isFileExists(filename)) {
+            throw new DBPropertiesException("File: '" + filename + "' does not exist");
+        }
         this.DEFAULTS_DSN_FILENAME = filename;
     }
 
