@@ -77,6 +77,18 @@ public class FileUtils
         }
     }
 
+    public static boolean isFileExists(String filename)  throws Exception {
+        if (filename == null) return false;
+        File f = new File(filename);
+        if (!f.exists()) {
+            InputStream is = FileUtils.class.getClassLoader().getResourceAsStream(filename);
+            if (is == null) return false;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static BufferedReader getReaderFromResource(String filename) throws Exception {
         InputStream is = FileUtils.class.getClassLoader().getResourceAsStream(filename);
         InputStreamReader isr = new InputStreamReader(is);
