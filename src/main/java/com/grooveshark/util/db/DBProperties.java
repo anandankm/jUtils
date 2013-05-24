@@ -55,7 +55,7 @@ public class DBProperties
 
     public void loadDefaults() throws Exception {
         String[] defaults = { "defaults" };
-        JsonElement je = FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, defaults);
+        JsonElement je = this.getJsonElement(this.DEFAULTS_DSN_FILENAME, defaults);
         this.mongoHost = this.getJsonMongoHost(je);
         this.mongoPort = this.getJsonMongoPort(je);
         this.mongoDB = this.getJsonMongoDB(je);
@@ -70,6 +70,10 @@ public class DBProperties
         log.debug("DEFAULT_MYSQL_DRIVER=" + this.DEFAULT_MYSQL_DRIVER);
         log.debug("HIVE_URL=" + this.hiveUrl);
         log.debug("HIVE_TEST_QUERY=" + this.hiveTestQuery);
+    }
+
+    public JsonElement getJsonElement(String[] jsonHeaders) throws Exception {
+        return FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, jsonHeaders);
     }
 
     public String getJsonHiveTestQuery(JsonElement je) throws Exception {
