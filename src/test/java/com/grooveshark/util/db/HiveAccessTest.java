@@ -16,7 +16,7 @@ public class HiveAccessTest
     public DBAccess hiveAccess = null;
     public DBProperties dbProps = null;
 
-    @Before
+    //@Before
     public void setup() {
         try {
             this.dbProps = new DBProperties();
@@ -32,7 +32,7 @@ public class HiveAccessTest
 
     }
 
-    @Test
+    //@Test
     public void executeQueryTest()
     {
         try {
