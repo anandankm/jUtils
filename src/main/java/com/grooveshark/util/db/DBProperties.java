@@ -55,7 +55,7 @@ public class DBProperties
 
     public void loadDefaults() throws Exception {
         String[] defaults = { "defaults" };
-        JsonElement je = this.getJsonElement(this.DEFAULTS_DSN_FILENAME, defaults);
+        JsonElement je = this.getJsonElement(defaults);
         this.mongoHost = this.getJsonMongoHost(je);
         this.mongoPort = this.getJsonMongoPort(je);
         this.mongoDB = this.getJsonMongoDB(je);
@@ -147,7 +147,7 @@ public class DBProperties
         if (mysql_password.equals("")) {
             String type = FileUtils.getJsonValue(je, "type");
             if (type.equals("mysql")) {
-                mysql_password = FileUtils.getJsonvalue(je, "password");
+                mysql_password = FileUtils.getJsonValue(je, "password");
             }
         }
         return mysql_password.equals("") ? this.mysqlPass : mysql_password;
@@ -159,7 +159,7 @@ public class DBProperties
         if (mysql_user.equals("")) {
             String type = FileUtils.getJsonValue(je, "type");
             if (type.equals("mysql")) {
-                mysql_user = FileUtils.getJsonvalue(je, "user");
+                mysql_user = FileUtils.getJsonValue(je, "user");
             }
         }
         return mysql_user.equals("") ? this.mysqlUser : mysql_user;
@@ -170,7 +170,7 @@ public class DBProperties
         if (mysql_options.equals("")) {
             String type = FileUtils.getJsonValue(je, "type");
             if (type.equals("mysql")) {
-                mysql_options = FileUtils.getJsonvalue(je, "options");
+                mysql_options = FileUtils.getJsonValue(je, "options");
             }
         }
         return mysql_options.equals("") ? this.mysqlOptions : mysql_options;
@@ -181,7 +181,7 @@ public class DBProperties
         if (mysql_host.equals("")) {
             String type = FileUtils.getJsonValue(je, "type");
             if (type.equals("mysql")) {
-                mysql_host = FileUtils.getJsonvalue(je, "host");
+                mysql_host = FileUtils.getJsonValue(je, "host");
             }
         }
         return mysql_host.equals("") ? this.mysqlHost : mysql_host;
@@ -192,7 +192,7 @@ public class DBProperties
         if (mysql_db.equals("")) {
             String type = FileUtils.getJsonValue(je, "type");
             if (type.equals("mysql")) {
-                mysql_db = FileUtils.getJsonvalue(je, "db");
+                mysql_db = FileUtils.getJsonValue(je, "db");
             }
         }
         return mysql_db.equals("") ? this.mysqlDB : mysql_db;
