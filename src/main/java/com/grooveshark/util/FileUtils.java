@@ -77,7 +77,7 @@ public class FileUtils
         }
     }
 
-    public static boolean isFileExists(String filename)  throws Exception {
+    public static boolean isFileExists(String filename) {
         if (filename == null) return false;
         File f = new File(filename);
         if (!f.exists()) {
