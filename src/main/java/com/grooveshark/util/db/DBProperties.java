@@ -72,6 +72,10 @@ public class DBProperties
         log.debug("HIVE_TEST_QUERY=" + this.hiveTestQuery);
     }
 
+    public void setMysqlDsn(String[] jsonHeaders) throws Exception {
+        JsonElement mysqlJe = this.getJsonElement(jsonHeaders);
+        this.mysqlURL = this.getJsonMysqlUrl(mysqlJe);
+    }
     public JsonElement getJsonElement(String[] jsonHeaders) throws Exception {
         return FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, jsonHeaders);
     }
@@ -138,16 +142,34 @@ public class DBProperties
 
     public String getJsonMysqlOptions(JsonElement je) throws Exception {
         String mysql_options = FileUtils.getJsonValue(je, "mysql_options");
+        if (mysql_options.equals("")) {
+            String type = FileUtils.getJsonValue(je, "type");
+            if (type.equals("mysql")) {
+                mysql_options = FileUtils.getJsonvalue(je, "options");
+            }
+        }
         return mysql_options.equals("") ? this.mysqlOptions : mysql_options;
     }
 
     public String getJsonMysqlHost(JsonElement je) throws Exception {
         String mysql_host = FileUtils.getJsonValue(je, "mysql_host");
+        if (mysql_host.equals("")) {
+            String type = FileUtils.getJsonValue(je, "type");
+            if (type.equals("mysql")) {
+                mysql_host = FileUtils.getJsonvalue(je, "host");
+            }
+        }
         return mysql_host.equals("") ? this.mysqlHost : mysql_host;
     }
 
     public String getJsonMysqlDB(JsonElement je) throws Exception {
         String mysql_db = FileUtils.getJsonValue(je, "mysql_db");
+        if (mysql_db.equals("")) {
+            String type = FileUtils.getJsonValue(je, "type");
+            if (type.equals("mysql")) {
+                mysql_db = FileUtils.getJsonvalue(je, "db");
+            }
+        }
         return mysql_db.equals("") ? this.mysqlDB : mysql_db;
     }
 
