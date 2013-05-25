@@ -145,7 +145,7 @@ public class DBProperties
     public String getJsonMysqlPassword(JsonElement je) throws Exception {
         String mysql_password = FileUtils.getJsonValue(je, "mysql_password");
         if (mysql_password.equals("")) {
-            String type = FileUtils.getJsonValue(je, "type");
+            String type = FileUtils.getJsonValue(je, "db_type");
             if (type.equals("mysql")) {
                 mysql_password = FileUtils.getJsonValue(je, "password");
             }
@@ -157,7 +157,7 @@ public class DBProperties
     public String getJsonMysqlUser(JsonElement je) throws Exception {
         String mysql_user = FileUtils.getJsonValue(je, "mysql_user");
         if (mysql_user.equals("")) {
-            String type = FileUtils.getJsonValue(je, "type");
+            String type = FileUtils.getJsonValue(je, "db_type");
             if (type.equals("mysql")) {
                 mysql_user = FileUtils.getJsonValue(je, "user");
             }
@@ -168,7 +168,7 @@ public class DBProperties
     public String getJsonMysqlOptions(JsonElement je) throws Exception {
         String mysql_options = FileUtils.getJsonValue(je, "mysql_options");
         if (mysql_options.equals("")) {
-            String type = FileUtils.getJsonValue(je, "type");
+            String type = FileUtils.getJsonValue(je, "db_type");
             if (type.equals("mysql")) {
                 mysql_options = FileUtils.getJsonValue(je, "options");
             }
@@ -179,7 +179,7 @@ public class DBProperties
     public String getJsonMysqlHost(JsonElement je) throws Exception {
         String mysql_host = FileUtils.getJsonValue(je, "mysql_host");
         if (mysql_host.equals("")) {
-            String type = FileUtils.getJsonValue(je, "type");
+            String type = FileUtils.getJsonValue(je, "db_type");
             if (type.equals("mysql")) {
                 mysql_host = FileUtils.getJsonValue(je, "host");
             }
@@ -190,7 +190,7 @@ public class DBProperties
     public String getJsonMysqlDB(JsonElement je) throws Exception {
         String mysql_db = FileUtils.getJsonValue(je, "mysql_db");
         if (mysql_db.equals("")) {
-            String type = FileUtils.getJsonValue(je, "type");
+            String type = FileUtils.getJsonValue(je, "db_type");
             if (type.equals("mysql")) {
                 mysql_db = FileUtils.getJsonValue(je, "db");
             }
