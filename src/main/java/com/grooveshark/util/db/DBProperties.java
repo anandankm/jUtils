@@ -75,6 +75,8 @@ public class DBProperties
     public void setMysqlDsn(String[] jsonHeaders) throws Exception {
         JsonElement mysqlJe = this.getJsonElement(jsonHeaders);
         this.mysqlURL = this.getJsonMysqlUrl(mysqlJe);
+        this.mysqlUser = this.getJsonMysqlUser(mysqlJe);
+        this.mysqlPass = this.getJsonMysqlPassword(mysqlJe);
     }
     public JsonElement getJsonElement(String[] jsonHeaders) throws Exception {
         return FileUtils.parseJson(this.DEFAULTS_DSN_FILENAME, jsonHeaders);
@@ -138,6 +140,29 @@ public class DBProperties
             return DBProperties.DEFAULT_MYSQL_URL;
         }
         return "jdbc:mysql://" + this.mysqlHost + ":3306/" + this.mysqlDB + this.mysqlOptions;
+    }
+
+    public String getJsonMysqlPassword(JsonElement je) throws Exception {
+        String mysql_password = FileUtils.getJsonValue(je, "mysql_password");
+        if (mysql_password.equals("")) {
+            String type = FileUtils.getJsonValue(je, "type");
+            if (type.equals("mysql")) {
+                mysql_password = FileUtils.getJsonvalue(je, "password");
+            }
+        }
+        return mysql_password.equals("") ? this.mysqlPass : mysql_password;
+    }
+
+
+    public String getJsonMysqlUser(JsonElement je) throws Exception {
+        String mysql_user = FileUtils.getJsonValue(je, "mysql_user");
+        if (mysql_user.equals("")) {
+            String type = FileUtils.getJsonValue(je, "type");
+            if (type.equals("mysql")) {
+                mysql_user = FileUtils.getJsonvalue(je, "user");
+            }
+        }
+        return mysql_user.equals("") ? this.mysqlUser : mysql_user;
     }
 
     public String getJsonMysqlOptions(JsonElement je) throws Exception {
