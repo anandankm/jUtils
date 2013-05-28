@@ -10,11 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.fail;
 
+import org.apache.log4j.Logger;
+
 
 public class HiveAccessTest
 {
     public DBAccess hiveAccess = null;
     public DBProperties dbProps = null;
+    public static final Logger log = Logger.getLogger(HiveAccessTest.class);
 
     @Before
     public void setup() {
@@ -35,20 +38,22 @@ public class HiveAccessTest
     @Test
     public void executeQueryTest()
     {
+        long start = System.currentTimeMillis();
+        log.debug("Executing test query");
+        String resultStr = "";
         try {
-            long start = System.currentTimeMillis();
             ResultSet res = this.hiveAccess.executeQuery(this.dbProps.getHiveTestQuery());
-            String resultStr = "";
             while (res.next()) {
                 resultStr += res.getString(1) + ", ";
             }
-            System.out.println("Query result: " + resultStr);
-            float elapsed = (System.currentTimeMillis() - start)/(float) 1000;
-            System.out.println("Done ("+elapsed+" secs).");
         } catch (Exception e) {
+            log.error(e.getMessage());
             e.printStackTrace();
             fail("Failed to execute query: " + this.dbProps.getHiveTestQuery() + "\n" + e.getMessage());
         }
+        log.debug("Query result: " + resultStr);
+        float elapsed = (System.currentTimeMillis() - start)/(float) 1000;
+        log.debug("Done ("+elapsed+" secs).");
     }
 
 }
