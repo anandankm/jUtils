@@ -102,6 +102,10 @@
             <groupId>org.apache.hive</groupId>
             <artifactId>hive-builtins</artifactId>
             <version>0.9.0-cdh4.1.2</version>
+            <!--
+            <version>0.10.0-cdh4.3.0</version>
+            <version>0.9.0-cdh4.1.2</version>
+            -->
         </dependency>
     </dependencies>
     <build>
