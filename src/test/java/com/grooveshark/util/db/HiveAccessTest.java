@@ -16,13 +16,13 @@ public class HiveAccessTest
     public DBAccess hiveAccess = null;
     public DBProperties dbProps = null;
 
-    //@Before
+    @Before
     public void setup() {
         try {
             this.dbProps = new DBProperties();
             this.hiveAccess = new DBAccess();
-            this.hiveAccess.setUrl(this.dbProps.getHiveUrl());
-            this.hiveAccess.setDriver(this.dbProps.DEFAULT_HIVE_DRIVER);
+            this.hiveAccess.setUrl(DBProperties.DEFAULT_HIVE_URL);
+            this.hiveAccess.setDriver(DBProperties.DEFAULT_HIVE_DRIVER);
             this.hiveAccess.setCheckIfValid(false);
             this.hiveAccess.makeConnection();
         } catch (Exception e) {
@@ -32,16 +32,22 @@ public class HiveAccessTest
 
     }
 
-    //@Test
+    @Test
     public void executeQueryTest()
     {
         try {
             long start = System.currentTimeMillis();
-            System.out.println("Query result: " + this.hiveAccess.executeQuery(this.dbProps.getHiveTestQuery()));
+            ResultSet res = this.hiveAccess.executeQuery(this.dbProps.getHiveTestQuery());
+            String resultStr = "";
+            while (res.next()) {
+                resultStr += res.getString(1) + ", ";
+            }
+            System.out.println("Query result: " + resultStr);
             float elapsed = (System.currentTimeMillis() - start)/(float) 1000;
             System.out.println("Done ("+elapsed+" secs).");
         } catch (Exception e) {
             e.printStackTrace();
+            fail("Failed to execute query: " + this.dbProps.getHiveTestQuery() + "\n" + e.getMessage());
         }
     }
 
