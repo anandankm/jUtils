@@ -68,7 +68,9 @@ public class DBProperties
         log.debug("DEFAULT_MONGO_PORT=" + this.DEFAULT_MONGO_PORT);
         log.debug("DEFAULT_MONGO_DB=" + this.DEFAULT_MONGO_DB);
         log.debug("DEFAULT_MYSQL_URL=" + this.DEFAULT_MYSQL_URL);
+        log.debug("DEFAULT_HIVE_URL=" + this.DEFAULT_HIVE_URL);
         log.debug("DEFAULT_MYSQL_DRIVER=" + this.DEFAULT_MYSQL_DRIVER);
+        log.debug("DEFAULT_HIVE_DRIVER=" + this.DEFAULT_HIVE_DRIVER);
         log.debug("HIVE_URL=" + this.hiveUrl);
         log.debug("HIVE_TEST_QUERY=" + this.hiveTestQuery);
     }
