@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import com.mysql.jdbc.Statement;
 import java.sql.ResultSetMetaData;
 
 import org.apache.log4j.Logger;
@@ -139,7 +138,17 @@ public class DBAccess
         throws SQLException
     {
         this.makeConnection();
-        return this.connection.createStatement().executeQuery(sql);
+        ResultSet res = null;
+        java.sql.Statement stmt = null;
+        try {
+            stmt = this.connection.createStatement();
+            res = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            log.debug(e.getMessage());
+            log.debug("Trying again");
+            res = stmt.executeQuery(sql);
+        }
+        return res;
     }
 
     public boolean[] findStringTypes(String table)
