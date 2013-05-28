@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 public class DBProperties
 {
     public static String DEFAULT_MYSQL_URL = "jdbc:mysql://localhost:3306/mysql";
+    public static String DEFAULT_HIVE_URL = "jdbc:hive://localhost:10000/default";
     public static String DEFAULT_MYSQL_USER = "root";
     public static String DEFAULT_MYSQL_PASS = "pass";
     public static String DEFAULT_MONGO_HOST = "localhost";
@@ -91,7 +92,7 @@ public class DBProperties
         this.hiveHost = this.getJsonHiveHost(je);
         this.hiveDB = this.getJsonHiveDB(je);
         this.hivePort = this.getJsonHivePort(je);
-        if (this.hiveHost.equals("") && this.hiveDB.equals("") && this.hivePort == 0) {
+        if (this.hiveHost.equals("") && this.hiveDB.equals("")) {
             return "jdbc:hive://";
         }
         return "jdbc:hive://" + this.hiveHost + ":" + this.hivePort + "/" + this.hiveDB;
