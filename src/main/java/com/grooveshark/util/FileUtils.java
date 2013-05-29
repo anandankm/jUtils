@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -77,16 +80,20 @@ public class FileUtils
         }
     }
 
-    public static boolean isFileExists(String filename) {
-        if (filename == null) return false;
+    public static InputStream getInputStream(String filename) {
+        InputStream is = null;
+        if (filename == null) return is;
         File f = new File(filename);
         if (!f.exists()) {
-            InputStream is = FileUtils.class.getClassLoader().getResourceAsStream(filename);
-            if (is == null) return false;
-            return true;
+            is = FileUtils.class.getClassLoader().getResourceAsStream(filename);
         } else {
-            return false;
+            try {
+                is = new FileInputStream(f);
+            } catch (FileNotFoundException e) {
+                return null;
+            }
         }
+        return is;
     }
 
     public static BufferedReader getReaderFromResource(String filename) throws Exception {
@@ -113,6 +120,16 @@ public class FileUtils
             }
         }
         return je;
+    }
+
+    public static HashMap getJsonMap(String filename, String[] header, String[] keys) throws Exception
+    {
+        JsonElement je = FileUtils.parseJson(filename, header);
+        HashMap<String, String> jsonMap = new HashMap<String, String>();
+        for (String key : keys) {
+            jsonMap.put(key, FileUtils.getJsonValue(je, key));
+        }
+        return jsonMap;
     }
 
     public static String getJsonValue(JsonElement je, String key)
