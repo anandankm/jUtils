@@ -202,7 +202,7 @@ public class DBProperties
     }
 
     public void setDefaultsDsnFilename(String filename) throws DBPropertiesException {
-        if (!FileUtils.isFileExists(filename)) {
+        if (FileUtils.getInputStream(filename) == null) {
             throw new DBPropertiesException("File: '" + filename + "' does not exist");
         }
         this.DEFAULTS_DSN_FILENAME = filename;
