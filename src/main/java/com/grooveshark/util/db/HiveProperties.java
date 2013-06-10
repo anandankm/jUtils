@@ -16,11 +16,13 @@ public class HiveProperties
     protected LinkedList<String> partitionColumns = null;
     protected LinkedList<String> partitionValues = null;
     protected LinkedList<String> partitonTypes = null;
+    protected Properties hiveProps = null;
 
     public HiveProperties() {
     }
 
     public HiveProperties(Properties props) {
+        this.hiveProps = props;
         this.hivePrefix = props.getProperty("HIVE_PREFIX", this.hivePrefix).trim();
         this.hiveTable = props.getProperty("HIVE_TABLE", "").trim();
         this.partitionColumns = StringUtils.splitTrim(props.getProperty("PARTITION_COLUMNS", "").trim());
@@ -28,6 +30,18 @@ public class HiveProperties
         this.partitionTypes = StringUtils.splitTrim(props.getProperty("PARTITION_TYPES", "").trim());
     }
 
+    /**
+     * Setter method for hiveProps
+     */
+    public void setHiveProps(Properties hiveProps) {
+        this.hiveProps = hiveProps;
+    }
+    /**
+     * Getter method for hiveProps
+     */
+    public Properties getHiveProps() {
+        return this.hiveProps;
+    }
     /**
      * Setter method for partitionColumns
      */
