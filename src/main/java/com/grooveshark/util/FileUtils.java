@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.Properties;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -159,5 +160,14 @@ public class FileUtils
             br = new BufferedReader( new FileReader(filename) );
         }
         return FileUtils.parseJson(br, jsonPath);
+    }
+
+    public static Properties getProperties(String filename) throws IOException {
+        Properties props = new Properties();
+        InputStream is = FileUtils.getInputStream(filename);
+        if (is != null) {
+            props.load(is);
+        }
+        return props;
     }
 }
