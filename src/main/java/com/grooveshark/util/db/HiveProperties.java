@@ -1,7 +1,9 @@
 package com.grooveshark.util.db;
 
+import java.util.LinkedList;
+import java.util.Properties;
 import com.grooveshark.util.FileUtils;
-import com.groovehsark.util.StringUtils;
+import com.grooveshark.util.StringUtils;
 import com.google.gson.JsonElement;
 
 import org.apache.log4j.Logger;
@@ -15,7 +17,8 @@ public class HiveProperties
     protected String hiveTable = "";
     protected LinkedList<String> partitionColumns = null;
     protected LinkedList<String> partitionValues = null;
-    protected LinkedList<String> partitonTypes = null;
+    protected LinkedList<String> partitionTypes = null;
+    protected String outputPath = "";
     protected Properties hiveProps = null;
 
     public HiveProperties() {
@@ -25,9 +28,10 @@ public class HiveProperties
         this.hiveProps = props;
         this.hivePrefix = props.getProperty("HIVE_PREFIX", this.hivePrefix).trim();
         this.hiveTable = props.getProperty("HIVE_TABLE", "").trim();
-        this.partitionColumns = StringUtils.splitTrim(props.getProperty("PARTITION_COLUMNS", "").trim());
-        this.partitionValues = StringUtils.splitTrim(props.getProperty("PARTITION_VALUES", "").trim());
-        this.partitionTypes = StringUtils.splitTrim(props.getProperty("PARTITION_TYPES", "").trim());
+        this.partitionColumns = StringUtils.splitTrim(props.getProperty("PARTITION_COLUMNS", "").trim(), ",");
+        this.partitionValues = StringUtils.splitTrim(props.getProperty("PARTITION_VALUES", "").trim(), ",");
+        this.partitionTypes = StringUtils.splitTrim(props.getProperty("PARTITION_TYPES", "").trim(), ",");
+        this.outputPath = props.getProperty("OUTPUT_PATH", "").trim();
     }
 
     /**
@@ -67,16 +71,16 @@ public class HiveProperties
         return this.partitionValues;
     }
     /**
-     * Setter method for partitonTypes
+     * Setter method for partitionTypes
      */
-    public void setPartitonTypes(LinkedList<String> partitonTypes) {
-        this.partitonTypes = partitonTypes;
+    public void setPartitionTypes(LinkedList<String> partitionTypes) {
+        this.partitionTypes = partitionTypes;
     }
     /**
-     * Getter method for partitonTypes
+     * Getter method for partitionTypes
      */
-    public LinkedList<String> getPartitonTypes() {
-        return this.partitonTypes;
+    public LinkedList<String> getPartitionTypes() {
+        return this.partitionTypes;
     }
     /**
      * Setter method for hivePrefix
@@ -101,6 +105,18 @@ public class HiveProperties
      */
     public String getHiveTable() {
         return this.hiveTable;
+    }
+    /**
+     * Setter method for outputPath
+     */
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
+    }
+    /**
+     * Getter method for outputPath
+     */
+    public String getOutputPath() {
+        return this.outputPath;
     }
 
 }
