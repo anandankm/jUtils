@@ -2,10 +2,17 @@ package com.grooveshark.util.db;
 
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.Arrays;
 import com.grooveshark.util.FileUtils;
 import com.grooveshark.util.StringUtils;
 import com.google.gson.JsonElement;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.mapred.JobConf;
 
+import java.io.IOException;
 import org.apache.log4j.Logger;
 
 public class HiveProperties 
@@ -32,6 +39,65 @@ public class HiveProperties
         this.partitionValues = StringUtils.splitTrim(props.getProperty("PARTITION_VALUES", "").trim(), ",");
         this.partitionTypes = StringUtils.splitTrim(props.getProperty("PARTITION_TYPES", "").trim(), ",");
         this.outputPath = props.getProperty("OUTPUT_PATH", "").trim();
+    }
+
+    /**
+     * Get a list of path names given the above
+     * hive table properties
+     */
+    public Path[] getFileList(JobConf conf) throws IOException {
+        int len = this.partitionColumns.size();
+        FileStatus[] fileStatus = null;
+        String tablePath = this.hivePrefix + "/" + this.hiveTable;
+        Path tableLoc = new Path(tablePath);
+        FileSystem fs = tableLoc.getFileSystem(conf);
+        for(int i = 0; i < len; i++) {
+            String pCol = this.partitionColumns.get(i);
+            String pVal = this.partitionValues.get(i);
+            /**
+             * Partition values are colon [:] separated
+             * The directories inclusive of both the values
+             * are filtered
+             */
+            if (!pVal.contains(":")) {
+                tablePath += "/" + pCol + "=" + pVal;
+                tableLoc = new Path(tablePath);
+            } else {
+                String[] vals = pVal.split(":");
+                final String pathName1 = pCol + "=" + vals[0];
+                final String pathName2 = pCol + "=" + vals[1];
+                PathFilter pathFilter = new PathFilter() {
+                    public boolean accept(Path path) {
+                        String pathName = path.getName();
+                        if (pathName.compareToIgnoreCase(pathName1) >= 0 &&
+                                pathName.compareToIgnoreCase(pathName2) <= 0) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+                if (fileStatus == null) {
+                    fileStatus = fs.listStatus(tableLoc, pathFilter);
+                } else {
+                    LinkedList<FileStatus> tempFileStatus = new LinkedList<FileStatus>();
+                    for (int j = 0; j < fileStatus.length; j++) {
+                        tempFileStatus.addAll(Arrays.asList(fs.listStatus(fileStatus[j].getPath(), pathFilter)));
+                    }
+                    fileStatus = tempFileStatus.toArray(new FileStatus[0]);
+                }
+            }
+        }
+        Path[] paths = null;
+        if (fileStatus == null) {
+            paths = new Path[1];
+            paths[0] = tableLoc;
+        } else {
+            paths = new Path[fileStatus.length];
+            for (int i = 0; i < fileStatus.length; i++) {
+                paths[i] = fileStatus[i].getPath();
+            }
+        }
+        return paths;
     }
 
     /**
