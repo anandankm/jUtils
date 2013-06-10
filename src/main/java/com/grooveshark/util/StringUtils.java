@@ -20,4 +20,13 @@ public class StringUtils
         }
         return splitted;
     }
+
+    public static Properties getProperties(HashSet<String> properties, String filename) throws IOException {
+        Properties props = new Properties();
+        InputStream is = FileUtils.getInputStream(filename);
+        if (is != null) {
+            props.load(is);
+        }
+        return props;
+    }
 }
