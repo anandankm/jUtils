@@ -50,9 +50,15 @@ public class FileUtils
         return lines;
     }
 
+    public static BufferedWriter getWriter(String filename) throws Exception {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        return writer;
+    }
+
     public static void writeLine(BufferedWriter writer, String s) throws IOException {
         writer.write(s);
         writer.newLine();
+        writer.flush();
     }
 
     public static void writeLine(String filename, String s, boolean append) throws Exception {
