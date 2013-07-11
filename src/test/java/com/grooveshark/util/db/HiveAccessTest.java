@@ -19,7 +19,7 @@ public class HiveAccessTest
     public DBProperties dbProps = null;
     public static final Logger log = Logger.getLogger(HiveAccessTest.class);
 
-    @Before
+    //@Before
     public void setup() {
         try {
             this.dbProps = new DBProperties();
@@ -35,7 +35,7 @@ public class HiveAccessTest
 
     }
 
-    @Test
+    //@Test
     public void executeQueryTest()
     {
         long start = System.currentTimeMillis();
