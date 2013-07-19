@@ -28,8 +28,8 @@ import org.apache.hadoop.mapred.JobConf;
 public class FileUtils
 {
 
-    public static List<String> readFile(String filename) throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader(filename));
+    public static List<String> readFile(String filename) throws IOException {
+        BufferedReader br = FileUtils.getReader(filename);
         List<String> lines = new LinkedList<String>();
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -38,8 +38,8 @@ public class FileUtils
         return lines;
     }
 
-    public static List<String> readFile(String filename, int numLines) throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader(filename));
+    public static List<String> readFile(String filename, int numLines) throws IOException {
+        BufferedReader br = FileUtils.getReader(filename);
         List<String> lines = new LinkedList<String>();
         String line = "";
         int count = 1;
@@ -50,7 +50,11 @@ public class FileUtils
         return lines;
     }
 
-    public static BufferedWriter getWriter(String filename) throws Exception {
+    public static BufferedReader getReader(String filename) throws IOException {
+        return new BufferedReader(new InputStreamReader(FileUtils.getInputStream(filename)));
+    }
+
+    public static BufferedWriter getWriter(String filename) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         return writer;
     }
@@ -61,7 +65,7 @@ public class FileUtils
         writer.flush();
     }
 
-    public static void writeLine(String filename, String s, boolean append) throws Exception {
+    public static void writeLine(String filename, String s, boolean append) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename, append));
         writer.write(s);
         writer.newLine();
