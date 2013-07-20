@@ -21,7 +21,9 @@ public class Parser
     public Parser(String cityFilename, String regionFilename)
         throws IOException
     {
+        System.out.println("Reading city file");
         this.cityData = FileUtils.readFile(cityFilename);
+        System.out.println("Reading region file");
         this.regionData = FileUtils.readFile(regionFilename);
     }
 
@@ -36,7 +38,10 @@ public class Parser
         throws ParseException
     {
         int linenumber = 0;
-        for (int i = 2; i < cityData.size(); i++) {
+        for (int i = 3; i < cityData.size(); i++) {
+            if (i%10000 == 0) {
+                System.out.println("City data point: " + i);
+            }
             linenumber = i + 1;
             String cityInfo = cityData.get(i);
             String[] infoSplit = cityInfo.split(",");
@@ -48,6 +53,13 @@ public class Parser
             String countryCode = infoSplit[1].replaceAll("\"", "").trim();
             if (countryCode.length() != 2) {
                 throw new ParseException("City file has country code length != 2: linenumber - " + linenumber + "; data - " + cityInfo, 1);
+            }
+
+            /**
+             * discard dummy country code
+             */
+            if (countryCode.equals("01")) {
+                continue;
             }
 
             Map<String, Object> countryMap = this.getOrCreateMap(countryCode, this.country);
@@ -67,7 +79,7 @@ public class Parser
             if (regionCode.length() != 2 && regionCode.length() != 0) {
                 throw new ParseException("City file has region code length != 2: linenumber - " + linenumber + "; data - " + cityInfo, 2);
             }
-            String regionName = this.getRegionName(countryCode, regionCode);
+            String regionName = this.getRegionName(countryCode, regionCode, linenumber, cityInfo);
             Map<String, Object> regionsMap = this.getOrCreateMap("Regions", countryMap);
             Map<String, Object> regionMap = this.getOrCreateMap(regionName, regionsMap);
             /**
@@ -107,9 +119,15 @@ public class Parser
             return result;
     }
 
-    public String getRegionName(String countryCode, String regionCode)
+    public String getRegionName(String countryCode, String regionCode, int linenumber, String cityInfo)
+        throws ParseException
     {
-        return this.regionDataMap.get(countryCode + ":" + regionCode).toLowerCase();
+        String key = countryCode + ":" + regionCode;
+        if (this.regionDataMap.containsKey(key)) {
+            return this.regionDataMap.get(key).toLowerCase();
+        } else {
+            throw new ParseException("City file has invalid country, region codes: linenumber - " + linenumber + "; data - " + cityInfo, 2);
+        }
     }
 
     public void parseRegionData()
