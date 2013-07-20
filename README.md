@@ -19,3 +19,7 @@ Dependencies:
         - name: hadoop-annotations; version: 2.0.0-cdh4.1.2  
     * package: org.apache.hive  
         - name: hive-jdbc; version: 0.9.0-cdh4.1.2  
+
+3. Maxmind downloads
+    * http://dev.maxmind.com/static/csv/codes/maxmind/region.csv
+    * http://geolite.maxmind.com/download/geoip/database/GeoLiteCity_CSV/GeoLiteCity-latest.zip
