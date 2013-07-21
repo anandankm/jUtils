@@ -21,22 +21,31 @@ public class Parser
     private Map<String, Object> country = new HashMap<String, Object>();
     private Map<String, String> regionDataMap = new HashMap<String, String>();
 
-    public Parser(String cityFilename, String regionFilename, String blocksFilename)
+
+    public void setRegionFile(String regionFilename)
+        throws IOException
+    {
+        System.out.println("Reading region file");
+        this.regionData = FileUtils.readFile(regionFilename);
+    }
+
+    public void setCityFile(String cityFilename)
         throws IOException
     {
         System.out.println("Reading city file");
         this.cityData = FileUtils.readFile(cityFilename);
-        System.out.println("Reading region file");
-        this.regionData = FileUtils.readFile(regionFilename);
-        System.out.println("Reading blocks file");
-        FileUtils.readIntoSet(blocksFilename, blocksLocId);
     }
 
-    public void parseData()
+    public void setBlocksFile(String cityFilename)
+        throws IOException
+    {
+        System.out.println("Reading city file");
+        this.cityData = FileUtils.readIntoSet(blocksFile);
+    }
+
+    public void parseCountryRegion()
         throws ParseException
     {
-        this.parseRegionData();
-        this.parseCityData();
     }
 
     public void parseCityData()
@@ -55,10 +64,12 @@ public class Parser
                 throw new ParseException("City file has less than or equal to 6 comma separated values instead of 9: linenumber - " + linenumber + "; data - " + cityInfo, linenumber);
             }
 
+            /*
             String locId = infoSplit[0].trim();
             if (!this.blocksLocId.contains(locId)) {
                 continue;
             }
+            */
             String countryCode = infoSplit[1].replaceAll("\"", "").trim();
             if (countryCode.length() != 2) {
                 throw new ParseException("City file has country code length != 2: linenumber - " + linenumber + "; data - " + cityInfo, 1);
@@ -88,9 +99,8 @@ public class Parser
             if (regionCode.length() != 2 && regionCode.length() != 0) {
                 throw new ParseException("City file has region code length != 2: linenumber - " + linenumber + "; data - " + cityInfo, 2);
             }
-            String regionName = this.getRegionName(countryCode, regionCode, linenumber, cityInfo);
             Map<String, Object> regionsMap = this.getOrCreateMap("Regions", countryMap);
-            Map<String, Object> regionMap = this.getOrCreateMap(regionName, regionsMap);
+            Map<String, Object> regionMap = this.getOrCreateMap(regionCode, regionsMap);
             /**
              * If City name is empty, then take lat and long
              * for the region
@@ -128,6 +138,17 @@ public class Parser
             return result;
     }
 
+    public String getRegionName(String countryCode, String regionCode)
+        throws ParseException
+    {
+        String key = countryCode + ":" + regionCode;
+        if (this.regionDataMap.containsKey(key)) {
+            return this.regionDataMap.get(key).toLowerCase();
+        } else {
+            throw new ParseException("Country, Region codes does not exist in region database. CC: " + countryCode + "; RC: " + regionCode, 2);
+        }
+    }
+
     public String getRegionName(String countryCode, String regionCode, int linenumber, String cityInfo)
         throws ParseException
     {
@@ -135,7 +156,7 @@ public class Parser
         if (this.regionDataMap.containsKey(key)) {
             return this.regionDataMap.get(key).toLowerCase();
         } else {
-            throw new ParseException("City file has invalid country, region codes: linenumber - " + linenumber + "; data - " + cityInfo, 2);
+            throw new ParseException("City file has invalid country, region codes: linenumber - " + linenumber + "; data - " + cityInfo, linenumber);
         }
     }
 
