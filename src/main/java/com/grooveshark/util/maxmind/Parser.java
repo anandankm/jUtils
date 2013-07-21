@@ -4,6 +4,8 @@ import com.grooveshark.util.maxmind.entity.LatLong;
 import com.grooveshark.util.FileUtils;
 
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -14,17 +16,20 @@ public class Parser
 {
     private List<String> cityData;
     private List<String> regionData;
+    private Set<String> blocksLocId = new HashSet<String>();
 
     private Map<String, Object> country = new HashMap<String, Object>();
     private Map<String, String> regionDataMap = new HashMap<String, String>();
 
-    public Parser(String cityFilename, String regionFilename)
+    public Parser(String cityFilename, String regionFilename, String blocksFilename)
         throws IOException
     {
         System.out.println("Reading city file");
         this.cityData = FileUtils.readFile(cityFilename);
         System.out.println("Reading region file");
         this.regionData = FileUtils.readFile(regionFilename);
+        System.out.println("Reading blocks file");
+        FileUtils.readIntoSet(blocksFilename, blocksLocId);
     }
 
     public void parseData()
@@ -50,6 +55,10 @@ public class Parser
                 throw new ParseException("City file has less than or equal to 6 comma separated values instead of 9: linenumber - " + linenumber + "; data - " + cityInfo, linenumber);
             }
 
+            String locId = infoSplit[0].trim();
+            if (!this.blocksLocId.contains(locId)) {
+                continue;
+            }
             String countryCode = infoSplit[1].replaceAll("\"", "").trim();
             if (countryCode.length() != 2) {
                 throw new ParseException("City file has country code length != 2: linenumber - " + linenumber + "; data - " + cityInfo, 1);
