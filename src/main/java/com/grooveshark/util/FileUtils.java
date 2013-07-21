@@ -50,6 +50,20 @@ public class FileUtils
         return lines;
     }
 
+    public static void readIntoSet(String filename, Set<String> stringSet) throws IOException {
+        BufferedReader br = FileUtils.getReader(filename);
+        String line = "";
+        int count = 1;
+        while ((line = br.readLine()) != null) {
+            line = line.trim();
+            if (line.isEmpty()) {
+                continue;
+            }
+            stringSet.add(line);
+            count++;
+        }
+    }
+
     public static BufferedReader getReader(String filename) throws IOException {
         return new BufferedReader(new InputStreamReader(FileUtils.getInputStream(filename)));
     }
