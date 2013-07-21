@@ -12,6 +12,7 @@ public class ParserTest
     public static final Logger log = Logger.getLogger(ParserTest.class);
 
     public static final String cityFilename = "GeoLiteCity_latest/GeoLiteCity-Location.csv";
+    public static final String blocksFilename = "GeoLiteCity_latest/GeoLiteCity-Blocks.locid";
     public static final String regionFilename = "GeoLiteCity_latest/region.csv";
 
     private Parser parser = null;
