@@ -23,7 +23,7 @@ public class CommandTest
     }
 
     @Test
-    public void testParser()
+    public void testCommandExecutor()
     {
         long start = System.currentTimeMillis();
         String[] cmdArray = new String[3];
