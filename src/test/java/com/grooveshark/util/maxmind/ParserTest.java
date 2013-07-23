@@ -17,18 +17,21 @@ public class ParserTest
 
     private Parser parser = null;
 
-    @Before 
+    //@Before 
     public void setup()
     {
         try {
-            this.parser = new Parser(cityFilename, regionFilename);
+            this.parser = new Parser();
+            this.parser.setCityFile(cityFilename);
+            this.parser.setRegionFile(regionFilename);
+            this.parser.setBlocksFile(blocksFilename);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Failed to setup maxmind parser. Excpetion:\n"  + e.getMessage());
         }
     }
 
-    @Test
+    //@Test
     public void testParser()
     {
         long start = System.currentTimeMillis();
