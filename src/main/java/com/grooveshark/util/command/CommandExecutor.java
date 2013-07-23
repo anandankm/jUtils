@@ -11,6 +11,10 @@ public class CommandExecutor
 
     private Command command;
 
+    public CommandExecutor()
+    {
+    }
+
     public CommandExecutor(Command command)
     {
         this.command = command;
