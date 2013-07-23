@@ -36,11 +36,11 @@ public class Parser
         this.cityData = FileUtils.readFile(cityFilename);
     }
 
-    public void setBlocksFile(String cityFilename)
+    public void setBlocksFile(String blocksFile)
         throws IOException
     {
-        System.out.println("Reading city file");
-        this.cityData = FileUtils.readIntoSet(blocksFile);
+        System.out.println("Reading blocks file");
+        FileUtils.readIntoSet(blocksFile, this.blocksLocId);
     }
 
     public void parseCountryRegion()
