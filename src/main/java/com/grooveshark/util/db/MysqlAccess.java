@@ -77,7 +77,13 @@ public class MysqlAccess extends DBAccess
         String sql = "LOAD DATA LOCAL INFILE 'file.txt' INTO TABLE " + table + ";";
         statement.setLocalInfileInputStream(inputStream);
         statement.executeUpdate(sql);
+    }
 
+    public void loadDataLocal(String filename, String table, String setString)
+        throws SQLException
+    {
+        String sql = "LOAD DATA LOCAL INFILE '" + filename + "' INTO TABLE " + table + setString + ";";
+        this.executeUpdate(sql);
     }
 
 }
