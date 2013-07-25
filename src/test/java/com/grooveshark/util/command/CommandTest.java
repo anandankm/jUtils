@@ -25,12 +25,23 @@ public class CommandTest
     @Test
     public void testCommandExecutor()
     {
-        long start = System.currentTimeMillis();
         String[] cmdArray = new String[3];
-        cmdArray[0] = "grep" ;
-        cmdArray[1] = "chennai";
-        cmdArray[2] = cityFilename;
+        cmdArray[0] = "wc";
+        cmdArray[1] = "-l";
+        cmdArray[2] = "./src/main/resources/dsn/allCountries.txt";
+        //this.testCmdArray(cmdArray);
+        cmdArray = new String[4];
+        cmdArray[0] = "/bin/sh";
+        cmdArray[1] = "wc";
+        cmdArray[2] = "-l";
+        cmdArray[3] = "hive-table.properties";
+        //this.testCmdArray(cmdArray);
+    }
+
+    public void testCmdArray(String[] cmdArray)
+    {
         List<String> output = null;
+        long start = System.currentTimeMillis();
         try {
             output = this.executor.execute(cmdArray);
         } catch (Exception e) {
@@ -41,5 +52,4 @@ public class CommandTest
         System.out.println("Done ["+elapsed+" secs].");
         System.out.println("Output: " + output);
     }
-
 }
