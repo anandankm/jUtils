@@ -127,6 +127,14 @@ public class DBAccess
         this.connection = DBAccess.getInstance(this.url, this.user, this.pass, this.driver, 1, this.checkIfValid);
     }
 
+    public void closeConnection()
+        throws SQLException
+    {
+        if (this.connection != null && !this.connection.isClosed()) {
+            this.connection.close();
+        }
+    }
+
     public int executeUpdate(String sql)
         throws SQLException
     {
