@@ -2,19 +2,23 @@ package com.grooveshark.util.db;
 
 import java.sql.Types;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.fail;
 
+import org.apache.log4j.Logger;
 
 public class MysqlAccessTest
 {
     public MysqlAccess mysqlAccess = null;
 
+    public static final Logger log = Logger.getLogger(MysqlAccessTest.class);
     public static String MYSQL_TEST_TABLE = "TestTable";
     public static String MYSQL_TEST_QUERY = "select count(*) from TestTable";
     public static String[] MYSQL_LOAD_TEST_VALUES = {
@@ -50,13 +54,22 @@ public class MysqlAccessTest
                 "2012-11-15	1.7387	37.7917"
         };
 
-    //Before
+    @Before
     public void setup() {
         try {
+            DBProperties dbp = new DBProperties();
+            String[] jsonHeader = {"search"};
+            dbp.setMysqlDsn(jsonHeader);
+            String mysqlUrl = dbp.getMysqlURL();
+            String mysqlUser = dbp.getMysqlUser();
+            String mysqlPass = dbp.getMysqlPass();
+            log.debug("Mysql url: " + mysqlUrl);
+            log.debug("Mysql user: " + mysqlUser);
+            log.debug("Mysql pass: " + mysqlPass);
             this.mysqlAccess = new MysqlAccess(
-                    DBProperties.DEFAULT_MYSQL_URL,
-                    DBProperties.DEFAULT_MYSQL_USER,
-                    DBProperties.DEFAULT_MYSQL_PASS
+                    mysqlUrl,
+                    mysqlUser,
+                    mysqlPass
                     );
         } catch (Exception e) {
             fail("Failed to setup DB connection" + e.getMessage());
@@ -64,11 +77,30 @@ public class MysqlAccessTest
 
     }
 
-    //Test
+    @Test
     public void executeQueryTest()
     {
         try {
-            ResultSet res = mysqlAccess.executeQuery(MYSQL_TEST_QUERY);
+            System.out.println("Running executeQuery test");
+            String sql = "select CityID, City, 46.66666 as Latitude, '' as Region, '00' as Country from Cities where City = ? union select CityID, City, 43.333 as Latitude, 'TN' as Region, 'IN' as Country from Cities where City = ?";
+            List<String> lis = new LinkedList<String>();
+            lis.add("25 de Junho \"A\"");
+            lis.add("Bank al Inma' al Almani");
+            PreparedStatement ps = this.mysqlAccess.getPreparedStatement(sql, lis, 1);
+            boolean resultExists = ps.execute();
+            while (resultExists) {
+                ResultSet res = ps.getResultSet();
+                while (res.next()) {
+                    System.out.println("1: " + res.getString(1));
+                    System.out.println("2: " + res.getString(2));
+                    System.out.println("3: " + res.getString(3));
+                    System.out.println("4: " + res.getString(4));
+                    System.out.println("5: " + res.getString(5));
+                }
+                res.close();
+                resultExists = ps.getMoreResults();
+            }
+            ps.close();
         } catch (Exception e) {
             fail("Failed to execute query: " + MYSQL_TEST_QUERY + "; Exception: "  + e.getMessage());
         }
