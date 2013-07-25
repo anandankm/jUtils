@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.sql.Types;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -84,6 +85,18 @@ public class MysqlAccess extends DBAccess
     {
         String sql = "LOAD DATA LOCAL INFILE '" + filename + "' INTO TABLE " + table + setString + ";";
         this.executeUpdate(sql);
+    }
+
+    public PreparedStatement getPreparedStatement(String sql, List<String> values, int fetchSize)
+        throws SQLException
+    {
+        this.makeConnection();
+        PreparedStatement ps = this.connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.CLOSE_CURSORS_AT_COMMIT);
+        for (int i = 0; i < values.size(); i++) {
+            ps.setString(i+1, values.get(i));
+        }
+        ps.setFetchSize(fetchSize);
+        return ps;
     }
 
 }
