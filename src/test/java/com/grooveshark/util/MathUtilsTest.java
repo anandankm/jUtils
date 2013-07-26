@@ -20,7 +20,7 @@ public class MathUtilsTest
             // Jacksonville
             Float jackLat = 30.33218f;
             Float jackLong = -81.65565f;
-            // Miami 
+            // Miami
             Float miamiLat = 25.77427f;
             Float miamiLong = -80.19366f;
             System.out.println("Gainesville - Jacksonville distance in km");
