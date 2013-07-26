@@ -20,6 +20,34 @@ Dependencies:
     * package: org.apache.hive  
         - name: hive-jdbc; version: 0.9.0-cdh4.1.2  
 
-3. Maxmind downloads
+
+References:
+
+1. Maxmind downloads
     * http://dev.maxmind.com/static/csv/codes/maxmind/region.csv
     * http://geolite.maxmind.com/download/geoip/database/GeoLiteCity_CSV/GeoLiteCity-latest.zip
+
+2. Geonames downloads
+    * http://www.geonames.org/
+    * http://download.geonames.org/export/dump/
+
+3. Latitude Longitude distance reference:
+
+   * http://www.movable-type.co.uk/scripts/latlong.html
+   * Example test output:
+    -------------------------------------------------------
+    T E S T S
+    -------------------------------------------------------
+    Running com.grooveshark.util.MathUtilsTest
+
+    Gainesville - Jacksonville distance in kms
+
+    Spherical: 99.3965072749399
+    Haversine: 99.39650727499613
+
+    Gainesville - Miami distance in kms
+
+    Spherical: 479.4423493165074
+    Haversine: 479.442349316516
+    Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.133 sec
+
