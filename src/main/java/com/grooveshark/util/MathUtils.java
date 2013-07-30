@@ -55,4 +55,38 @@ public class MathUtils
 
         return c * MathUtils.R;
     }
+
+    public static int compareDouble(double i1, double i2)
+    {
+        if (i1 > i2) {
+            return 1;
+        } else if (i1 < i2) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int compareFloat(float i1, float i2)
+    {
+        if (i1 > i2) {
+            return 1;
+        } else if (i1 < i2) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int compareInt(int i1, int i2)
+    {
+        if (i1 > i2) {
+            return 1;
+        } else if (i1 < i2) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 }
